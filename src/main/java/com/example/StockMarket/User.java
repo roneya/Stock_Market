@@ -8,11 +8,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
 public class User {
-    @Id
-    private int id;
-    private static int count = 1;
+
+
+
     private String first_name;
     private String last_name;
+    @Id
     private String email;
     private String phone_number;
     private String password;
@@ -20,12 +21,10 @@ public class User {
 
     public User(){
 
-            this.id = count++; // increment count and assign the value to id
+
 
     }
-    public int getId() {
-        return id;
-    }
+
 
 
 
