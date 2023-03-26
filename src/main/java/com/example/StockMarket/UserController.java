@@ -9,7 +9,7 @@ public class UserController {
 
     @Autowired
     UserService userService;
-    @PostMapping("addUser")
+    @PostMapping("adduser")
     public String addUser(@RequestBody User user) throws Exception{
         return userService.addUser(user);
     }
@@ -21,6 +21,7 @@ public class UserController {
 
     @GetMapping("getinfo")
     public String getInfo(@RequestBody Stocks stocks) throws MessagingException {
+
         return userService.getInfo(stocks);
     }
 

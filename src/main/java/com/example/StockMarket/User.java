@@ -2,17 +2,20 @@ package com.example.StockMarket;
 
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
+
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Document(collection = "users")
 public class User {
-
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
 
     private String first_name;
@@ -22,13 +25,13 @@ public class User {
     private String email;
     @Indexed(unique = true)
     private String phone_number;
-    @JsonIgnore
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Transient
-    private String plainPassword;
-
-    private String encryptedPassword;
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public User(){
 
@@ -56,7 +59,7 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -71,13 +74,11 @@ public class User {
         this.phone_number = phone_number;
     }
 
+
+    @JsonIgnoreProperties(value = { "password" }, allowGetters = false)
     public String getPassword() {
-        return encryptedPassword;
+        return this.password;
     }
 
-    public void setPassword(String password) {
 
-        this.plainPassword = password;
-        this.encryptedPassword =  new BCryptPasswordEncoder().encode(password);
-    }
 }

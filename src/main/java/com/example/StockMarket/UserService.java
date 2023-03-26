@@ -9,6 +9,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,6 +30,13 @@ public class UserService {
     StocksRepository stocksRepository;
     @Autowired
     JavaMailSender javaMailSender;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public UserService(BCryptPasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
 
     public String addUser(User user) throws Exception {
@@ -36,6 +44,9 @@ public class UserService {
             User existingUser = userRepository.findById(user.getEmail()).get();
         }
         catch (Exception e){
+
+           user.setPassword(passwordEncoder.encode(user.getPassword()));
+
            userRepository.save(user);
            return "Done";
         }
@@ -43,14 +54,13 @@ public class UserService {
     }
 
     public String auth(Login login) {
+
         User user = userRepository.findById(login.getEmail()).get();
-        if (login.getPassword().equals(login.getPassword())) {
-            //Session session = new Session(); // here its time and id created automatically
-            //session.setEmail(login.getEmail());
-            //sessionRepository.save(session); //saved for every time user login
-            return "Login Successful";
+        if (user == null) {
+            return "false";
         }
-        return "Please Enter Valid credentials";
+        if(passwordEncoder.matches(login.getPassword(), user.getPassword())) return "Successful login";
+        return "Failed";
 
     }
 
