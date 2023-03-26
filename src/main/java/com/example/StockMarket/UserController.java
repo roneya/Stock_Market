@@ -10,7 +10,7 @@ public class UserController {
     @Autowired
     UserService userService;
     @PostMapping("addUser")
-    public String addUser(@RequestBody User user) {
+    public String addUser(@RequestBody User user) throws Exception{
         return userService.addUser(user);
     }
 

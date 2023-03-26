@@ -2,9 +2,13 @@ package com.example.StockMarket;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.annotation.Generated;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Document(collection = "users")
 public class User {
@@ -14,10 +18,17 @@ public class User {
     private String first_name;
     private String last_name;
     @Id
+    @Indexed(unique = true)
     private String email;
+    @Indexed(unique = true)
     private String phone_number;
+    @JsonIgnore
     private String password;
 
+    @Transient
+    private String plainPassword;
+
+    private String encryptedPassword;
 
     public User(){
 
@@ -61,10 +72,12 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return encryptedPassword;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+
+        this.plainPassword = password;
+        this.encryptedPassword =  new BCryptPasswordEncoder().encode(password);
     }
 }

@@ -8,10 +8,8 @@ import com.google.gson.JsonParser;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -33,9 +31,15 @@ public class UserService {
     JavaMailSender javaMailSender;
 
 
-    public String addUser(@RequestBody User user) {
-        userRepository.save(user);
-        return "Done";
+    public String addUser(User user) throws Exception {
+        try{
+            User existingUser = userRepository.findById(user.getEmail()).get();
+        }
+        catch (Exception e){
+           userRepository.save(user);
+           return "Done";
+        }
+        return "Email already in use";
     }
 
     public String auth(Login login) {
@@ -80,7 +84,7 @@ public class UserService {
             ans.add(firstDataList.toString()); //final answer
         }
 
-        //sendStockDetailsEmailAtTime(stocks.getEmail(), ans.toString());
+        sendStockDetailsEmailAtTime(stocks.getEmail(), ans.toString());
 
         stocksRepository.save(stocks);
         Session session = new Session();
@@ -113,7 +117,7 @@ public class UserService {
     public String abc( InfoInRange infoInRange){
         String key = "ND0M9WQI5K7TN5KE";
         RestTemplate restTemplate = new RestTemplate();
-            String smb = "WEEKLY";
+            String smb = "WEEKLY"; //as daily is premium
 
             String apiUrl = API_URL.replace("{symbol}",infoInRange.getStock_symbol()).replace("{frq}", smb).replace("{apikey}", key);
 
