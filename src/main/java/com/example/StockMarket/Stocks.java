@@ -3,16 +3,46 @@ package com.example.StockMarket;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "stocks")
 
 public class Stocks {
     @Id
-    private int id; // ND0M9WQI5K7TN5KE
+    private int id;
     private static int count = 1;
-    private String stock_symbol;
+    private List<String> stock_symbol;
 
-    private Notification_frequency notificationFrequency;
+    public List<String> getStock_symbol() {
+        return stock_symbol;
+    }
+
+    public void setStock_symbol(List<String> stock_symbol) {
+        this.stock_symbol = stock_symbol;
+    }
+
+    private List<Notification_frequency> notificationFrequency;
     private String notify_time;
+
+    private String email; //I added this as login info than doing it differently
+    private String password;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public Stocks(){
         this.id = count++;
     }
@@ -32,19 +62,12 @@ public class Stocks {
         Stocks.count = count;
     }
 
-    public String getStock_symbol() {
-        return stock_symbol;
-    }
 
-    public void setStock_symbol(String stock_symbol) {
-        this.stock_symbol = stock_symbol;
-    }
-
-    public Notification_frequency getNotificationFrequency() {
+    public List<Notification_frequency> getNotificationFrequency() {
         return notificationFrequency;
     }
 
-    public void setNotificationFrequency(Notification_frequency notificationFrequency) {
+    public void setNotificationFrequency(List<Notification_frequency> notificationFrequency) {
         this.notificationFrequency = notificationFrequency;
     }
 

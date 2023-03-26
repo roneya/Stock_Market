@@ -1,5 +1,6 @@
 package com.example.StockMarket;
 
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +20,13 @@ public class UserController {
     }
 
     @GetMapping("getinfo")
-    public String getInfo(@RequestBody Stocks stocks){
+    public String getInfo(@RequestBody Stocks stocks) throws MessagingException {
         return userService.getInfo(stocks);
+    }
+
+    @GetMapping("infoinrange")
+    public String abc(@RequestBody InfoInRange infoInRange){
+        return userService.abc(infoInRange);
     }
 
 
