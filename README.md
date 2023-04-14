@@ -29,6 +29,7 @@ Here the password is encoded and then stored for a unique email as id.
 
 
 
+![Screenshot (218)](https://user-images.githubusercontent.com/49265832/231977883-4b2729a7-883d-418d-8278-168c4a45d33a.png)
 
 
 3rd API: ("/subscribe")
@@ -44,6 +45,7 @@ Email notification and same time all session id and related data is stored in db
 Note: date and stock symbol and then open, high, low, close, volume these values are in the same sequence store in db.
 
 
+![Screenshot (217)](https://user-images.githubusercontent.com/49265832/231977664-95b182e2-5769-4723-bb9f-db2a69cf1ca5.png)
 
 
 4th API: ("/infoinrange")
